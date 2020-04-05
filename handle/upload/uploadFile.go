@@ -23,6 +23,7 @@ func UploadFile(c *gin.Context) {
 	//上传到腾讯云
 
 	File, err := file.Open()
+	defer File.Close()
 
 	if err != nil {
 		logger.LogError("open file failed;%v", err)
@@ -53,24 +54,9 @@ func UploadFile(c *gin.Context) {
 	}
 
 	logger.LogDebug("upload file successfully")
-	// logger.LogDebug("header =%#v", res.Header)
-
-	// body, err := ioutil.ReadAll(res.Body)
-	// if err != nil {
-	// 	logger.LogError("parse response body failed:%v", err)
-	// 	util.ResponseError(c, util.ErrCodeServerBusy)
-	// 	return
-	// }
-	//logger.LogDebug("reponse content:%v", body)
-	// logger.LogDebug("EscapedPath =%v", presignedURL.EscapedPath())
-	// logger.LogDebug("Hostname=%v", presignedURL.Hostname())
-	// logger.LogDebug("Path =%v", presignedURL.Path)
-	// logger.LogDebug("RequestURI=%v", presignedURL.RequestURI())
-
-	// logger.LogDebug("Scheme=%v", presignedURL.Scheme)
 	url := presignedURL.String()
 	index := strings.Index(url, "?")
-	data := []byte(url)
-	util.ResponseSuccess(c, string(data[0:index]))
+
+	util.ResponseSuccess(c, url[0:index])
 
 }

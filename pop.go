@@ -6,6 +6,7 @@ import (
 	"yiluhuakai/pop/db/mysql"
 	"yiluhuakai/pop/handle/login"
 	"yiluhuakai/pop/handle/opinion"
+	"yiluhuakai/pop/handle/record"
 	"yiluhuakai/pop/handle/upload"
 	"yiluhuakai/pop/middleware/checkSession"
 	middlewareLogin "yiluhuakai/pop/middleware/login"
@@ -45,6 +46,11 @@ func main() {
 	apiGroup := router.Group("/api/", checkSession.CheckSessionMiddleWare())
 	apiGroup.POST("/upload", upload.UploadFile)
 	apiGroup.POST("/create_opinion", opinion.CreateOponionHandle)
-
+	apiGroup.POST("/createrecord", record.CreateRecordHandle)
+	apiGroup.POST("/resetmark", record.ResetRecordHandle)
+	apiGroup.POST("/deleterecord", record.DeleteLastRecordHandle)
+	apiGroup.POST("/updatenote", record.UpdateRecordNoteHandle)
+	apiGroup.GET("/getmark", record.GetMarkHandle)
+	apiGroup.GET("/getrecords", record.GetRecordsHandle)
 	router.Run() // 监听并在 0.0.0.0:8080 上启动服务
 }
